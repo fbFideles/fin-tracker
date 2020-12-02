@@ -1,0 +1,8 @@
+{
+    "database": {
+        "user": "fintracker",
+        "name": "fintracker",
+        "ssl": "disabled",
+        "password": "dev123456"
+    }
+}
