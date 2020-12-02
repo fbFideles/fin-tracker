@@ -21,7 +21,7 @@ type Config struct {
 
 // GetConfig é uma função
 func GetConfig() (configuracao Config) {
-	jsonFile, err := os.Open("./config.json")
+	jsonFile, err := os.Open("../config.json")
 	if err != nil {
 		log.Println(err)
 	}
