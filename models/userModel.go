@@ -2,7 +2,6 @@ package models
 
 import (
 	"database/sql"
-	"fmt"
 	"time"
 
 	"github.com/fbFideles/fin-tracker/utils"
@@ -30,17 +29,16 @@ func (u *User) GetAllUsers() (err error) {
 func (u *User) RegisterUser(tx *sql.Tx) (err error) {
 	hashBytes, err := bcrypt.GenerateFromPassword([]byte(*u.Password), bcrypt.DefaultCost)
 	if err != nil {
-		return fmt.Errorf("Error in hashing password")
+		return
 	}
 	u.Password = utils.StringPointer(string(hashBytes))
 
-	if _, err := tx.Exec(`
-		INSERT INTO t_user
-			(name, email, password)
-		VALUES
-			(?, ?, ?)
-		`); err != nil {
-		return err
+	if err = tx.QueryRow(`
+		INSERT INTO t_user (name, email, password)
+		VALUES (?, ?, ?) RETURNING id
+		`, u.Name, u.Email, u.Password).
+		Scan(u.ID); err != nil {
+		return
 	}
 
 	return

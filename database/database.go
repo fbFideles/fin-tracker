@@ -25,6 +25,7 @@ func newConnection() (database *sql.DB, err error) {
 	database, err = sql.Open("postgres", connString)
 	if err != nil {
 		log.Println(err)
+		return
 	}
 
 	return
@@ -35,11 +36,13 @@ func NewTransaction(ctx context.Context) (transaction *sql.Tx, err error) {
 	db, err := newConnection()
 	if err != nil {
 		log.Println(err)
+		return
 	}
 
 	transaction, err = db.BeginTx(ctx, nil)
 	if err != nil {
 		log.Println(err)
+		return
 	}
 
 	return
