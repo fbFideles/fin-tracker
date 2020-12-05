@@ -33,10 +33,9 @@ func (u *User) RegisterUser(tx *sql.Tx) (err error) {
 	}
 	u.Password = utils.StringPointer(string(hashBytes))
 
-	if err = tx.QueryRow(`
-		INSERT INTO t_user (name, email, password)
-		VALUES (?, ?, ?) RETURNING id
-		`, u.Name, u.Email, u.Password).
+	u.ID = new(int64)
+	if err = tx.QueryRow("INSERT INTO t_user (name, email, password) VALUES ($1, $2, $3) RETURNING id ",
+		u.Name, u.Email, u.Password).
 		Scan(u.ID); err != nil {
 		return
 	}

@@ -16,8 +16,10 @@ import (
 var conf = config.GetConfig()
 
 func newConnection() (database *sql.DB, err error) {
-	connString := fmt.Sprintf("user=%v dbname=%v sslmode=%v",
+	connString := fmt.Sprintf("postgres://%v:%v@%v/%v?sslmode=%v",
 		conf.Database.User,
+		conf.Database.Password,
+		conf.Database.Host,
 		conf.Database.Name,
 		conf.Database.SSL,
 	)

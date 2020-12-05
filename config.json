@@ -1,8 +1,9 @@
 {
     "database": {
         "user": "fintracker",
+        "host": "localhost",
         "name": "fintracker",
-        "ssl": "disabled",
-        "password": "dev123456"
+        "ssl": "disable",
+        "password": "SSS6gG18"
     }
 }

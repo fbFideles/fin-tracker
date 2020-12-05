@@ -1,6 +1,8 @@
 package controllers
 
 import (
+	"log"
+
 	"github.com/fbFideles/fin-tracker/database"
 	"github.com/fbFideles/fin-tracker/models"
 	"github.com/gin-gonic/gin"
@@ -12,7 +14,8 @@ func UserRegister(c *gin.Context) {
 	msgErrPadrao := "Could not register user"
 	user := models.User{}
 
-	if err := c.ShouldBindJSON(user); err != nil {
+	if err := c.ShouldBindJSON(&user); err != nil {
+		log.Println(err)
 		c.JSON(400, map[string]interface{}{
 			"message": msgErrPadrao + ": error on request read",
 		})
@@ -30,7 +33,7 @@ func UserRegister(c *gin.Context) {
 
 	if err = user.RegisterUser(tx); err != nil {
 		c.JSON(400, map[string]interface{}{
-			"message": msgErrPadrao + ": error on user database insert",
+			"message": err.Error(),
 		})
 		return
 	}

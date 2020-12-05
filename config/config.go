@@ -8,9 +8,11 @@ import (
 )
 
 type database struct {
-	User *string `json:"user"`
-	Name *string `json:"name"`
-	SSL  *string `json:"ssl"`
+	User     string `json:"user"`
+	Host     string `json:"host"`
+	Name     string `json:"name"`
+	Password string `json:"password"`
+	SSL      string `json:"ssl"`
 }
 
 // Config é uma estrutura que define
@@ -21,7 +23,7 @@ type Config struct {
 
 // GetConfig é uma função
 func GetConfig() (configuracao Config) {
-	jsonFile, err := os.Open("../config.json")
+	jsonFile, err := os.Open("config.json")
 	if err != nil {
 		log.Println(err)
 	}
