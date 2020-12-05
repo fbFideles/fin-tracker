@@ -1,6 +1,7 @@
 package database
 
 import (
+	"context"
 	"database/sql"
 	"fmt"
 	"log"
@@ -14,8 +15,7 @@ import (
 
 var conf = config.GetConfig()
 
-// NewConnection opens a new connection with the database
-func NewConnection() (database *sql.DB, err error) {
+func newConnection() (database *sql.DB, err error) {
 	connString := fmt.Sprintf("user=%v dbname=%v sslmode=%v",
 		conf.Database.User,
 		conf.Database.Name,
@@ -26,5 +26,21 @@ func NewConnection() (database *sql.DB, err error) {
 	if err != nil {
 		log.Println(err)
 	}
+
+	return
+}
+
+// NewTransaction defines a function with returns a new transaction
+func NewTransaction(ctx context.Context) (transaction *sql.Tx, err error) {
+	db, err := newConnection()
+	if err != nil {
+		log.Println(err)
+	}
+
+	transaction, err = db.BeginTx(ctx, nil)
+	if err != nil {
+		log.Println(err)
+	}
+
 	return
 }
