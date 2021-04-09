@@ -3,6 +3,7 @@ package database
 import (
 	"context"
 	"database/sql"
+	"errors"
 	"fmt"
 	"log"
 
@@ -13,9 +14,12 @@ import (
 	"github.com/fbFideles/fin-tracker/config"
 )
 
-var conf = config.GetConfig()
+var (
+	conf = config.GetConfig()
+	db   *sql.DB
+)
 
-func newConnection() (database *sql.DB, err error) {
+func NewConnection() (err error) {
 	connString := fmt.Sprintf("postgres://%v:%v@%v/%v?sslmode=%v",
 		conf.Database.User,
 		conf.Database.Password,
@@ -24,7 +28,7 @@ func newConnection() (database *sql.DB, err error) {
 		conf.Database.SSL,
 	)
 
-	database, err = sql.Open("postgres", connString)
+	db, err = sql.Open("postgres", connString)
 	if err != nil {
 		log.Println(err)
 		return
@@ -35,10 +39,8 @@ func newConnection() (database *sql.DB, err error) {
 
 // NewTransaction defines a function with returns a new transaction
 func NewTransaction(ctx context.Context) (transaction *sql.Tx, err error) {
-	db, err := newConnection()
-	if err != nil {
-		log.Println(err)
-		return
+	if db == nil {
+		return nil, errors.New("Database connection is not initialized please start")
 	}
 
 	transaction, err = db.BeginTx(ctx, nil)
