@@ -27,3 +27,9 @@ func SingUp(c *gin.Context) {
 
 	c.JSON(http.StatusCreated, token)
 }
+
+func SingIn(c *gin.Context) {
+	c.JSON(http.StatusCreated, gin.H{
+		"message": "ok",
+	})
+}

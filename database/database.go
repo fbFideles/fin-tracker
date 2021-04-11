@@ -19,6 +19,7 @@ var (
 	db   *sql.DB
 )
 
+// NewConnection initializes the database conection
 func NewConnection() (err error) {
 	connString := fmt.Sprintf("postgres://%v:%v@%v/%v?sslmode=%v",
 		conf.Database.User,
@@ -35,6 +36,13 @@ func NewConnection() (err error) {
 	}
 
 	return
+}
+
+// CloseConnection closes the active database section
+func CloseConnection() {
+	if err := db.Close(); err != nil {
+		panic(err)
+	}
 }
 
 // NewTransaction defines a function with returns a new transaction

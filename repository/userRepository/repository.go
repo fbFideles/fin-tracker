@@ -17,6 +17,12 @@ func NewRepository(tx *sql.Tx) IUser {
 	}
 }
 
+// RegisterUser is a data flux manager to build the repository method of registration
 func (r *repository) RegisterUser(req *userModel.ReqUserSingUp) (err error) {
 	return r.infra.RegisterUser(req)
+}
+
+// CheckEmail is a data flux manager to build the repository method of registration
+func (r *repository) CheckEmail(email *string) (err error) {
+	return r.infra.CheckEmail(email)
 }
