@@ -7,4 +7,5 @@ import (
 
 func UserRouter(r *gin.RouterGroup) {
 	r.POST("singup", userHandler.SingUp)
+	r.POST("signin", userHandler.SingIn)
 }
